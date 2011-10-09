@@ -5,23 +5,33 @@
 #include <newlib/vfs.h>
 #include <iso9660/iso9660.h>
 #include <fat/fat.h>
+#include <xtaf/xtaf.h>
 #include <malloc.h>
 #include <newlib/dirent.h>
 #include <errno.h>
 
 struct bdev devices[MAXDEVICES];
 
-struct vfs_mountop_s *determine_filesystem (struct bdev *dev)
-{
-	printf(" * trying to make sense of %s, ", dev->name);
 
-	if(!strcmp(dev->name,"dvd")){
-		printf("let's assume it's iso9660\n");
-		return &vfs_iso9660_mount_ops;
-	}else{
-		printf("let's assume it's fat\n");
-		return &vfs_fat_mount_ops;
-	}
+struct vfs_mountop_s *determine_filesystem(struct bdev *dev) {
+    printf(" * trying to make sense of %s, ", dev->name);
+
+    if (!strcmp(dev->name, "dvd")) {
+        printf("let's assume it's iso9660\n");
+        return &vfs_iso9660_mount_ops;
+    } else if (!strcmp(dev->name, "sda")) {
+        // check for xtaf or fat
+        if (hdd_is_xtaf(dev)) {
+            printf("let's assume it's xtaf\n");
+            return &vfs_xtaf_mount_ops;
+        } else {
+            printf("let's assume it's fat\n");
+            return &vfs_fat_mount_ops;
+        }
+    } else {
+        printf("let's assume it's fat\n");
+        return &vfs_fat_mount_ops;
+    }
 }
 
 struct bdev *register_bdev(void *ctx, struct bdev_ops *ops, const char *name)
