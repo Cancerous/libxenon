@@ -23,7 +23,12 @@ void set_controller_data(int port, const struct controller_data_s *d)
 
 extern int usbctrl_set_rumble(int port, uint8_t l, uint8_t r);
 
+static int oldl = -1, oldr = -1;
+
 void set_controller_rumble(int port, uint8_t l, uint8_t r)
 {
+	if(oldl == l && oldr == r)
+		return;
 	usbctrl_set_rumble(port, l, r);
+	oldl = l; oldr = r;
 }
