@@ -33,4 +33,5 @@ void set_controller_rumble(int port, uint8_t l, uint8_t r)
 		return;
 	usbctrl_set_rumble(port, l, r);
 	oldl[port] = l; oldr[port] = r;
+
 }

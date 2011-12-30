@@ -119,9 +119,8 @@ LIBOBJS = crti.o crtn.o \
 	../../drivers/threads/debug.o \
 	../../drivers/threads/c_debug.o \
 	../../drivers/threads/gdb.o \
-	../../drivers/threads/mutex.o \
-	../../drivers/xtaf/xtaf.o
-
+	../../drivers/threads/mutex.o
+	#../../drivers/xtaf/xtaf.o
 
 # Build rules
 all: $(TARGETS)
