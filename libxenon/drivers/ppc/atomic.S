@@ -27,6 +27,7 @@ atomic_clearset:
 	stwcx. %r6, 0, %r3
 	bne-   1b
 	blr
+
 .globl atomic_compareswap
 atomic_compareswap:
         li     %r7, 0
@@ -67,6 +68,7 @@ lock:
 3:
         db16cyc
         b       1b
+
 .globl unlock
 unlock:
         li      %r4, 0
